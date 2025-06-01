@@ -1,0 +1,91 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "text": "What’s your favorite weekend leisure activity?",
+      "options": {
+        "A": "Volunteering",
+        "B": "Going to the movies, attending events, etc.",
+        "C": "Reading books, newspapers, or magazines"
+      }
+    },
+    {
+      "id": 2,
+      "text": "What's your favorite daytime drink?",
+      "options": {
+        "A": "Coffee",
+        "B": "Water",
+        "C": "Fruit Drinks"
+      }
+    },
+    {
+      "id": 3,
+      "text": "What do you do when you first wake up in the morning?",
+      "options": {
+        "A": "Read the paper",
+        "B": "Hit the gym for a workout",
+        "C": "Write a to-do list"
+      }
+    },
+    {
+      "id": 4,
+      "text": "What’s your preferred method of communication?",
+      "options": {
+        "A": "Email",
+        "B": "Phone",
+        "C": "Social Media"
+      }
+    },
+    {
+      "id": 5,
+      "text": "What would be the best word to describe your clothing style?",
+      "options": {
+        "A": "Formal",
+        "B": "Mix of formal and casual",
+        "C": "Casual"
+      }
+    },
+    {
+      "id": 6,
+      "text": "What’s one piece of office equipment/office supply you couldn’t function without?",
+      "options": {
+        "A": "Daily Planner",
+        "B": "Photocopier",
+        "C": "Projector/whiteboard"
+      }
+    },
+    {
+      "id": 7,
+      "text": "Which of the following places would you most prefer to live if offered the choice?",
+      "options": {
+        "A": "Major metropolis",
+        "B": "Small city",
+        "C": "Rural area or suburbs"
+      }
+    },
+    {
+      "id": 8,
+      "text": "When you find yourself in a disagreement with someone, which of the following do you do the most?",
+      "options": {
+        "A": "State your case matter-of-factly",
+        "B": "Calm and defuse the situation"
+      }
+    },
+    {
+      "id": 9,
+      "text": "When you’re in a conversation with two or more people, which of these two activities do you find yourself doing more of?",
+      "options": {
+        "A": "Listening",
+        "B": "Talking"
+      }
+    },
+    {
+      "id": 10,
+      "text": "Which of the following ways do you keep the spices in your kitchen?",
+      "options": {
+        "A": "Organized alphabetically",
+        "B": "Organized by ones I use the most"
+      }
+    }
+  ]
+}

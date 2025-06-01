@@ -1,0 +1,11 @@
+<h2>Upload Resume and Interview</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+
+{% if result %}
+    <h3>Career Guidance Output:</h3>
+    <pre>{{ result|safe }}</pre>
+{% endif %}
