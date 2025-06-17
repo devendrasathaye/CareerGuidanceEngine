@@ -11,7 +11,7 @@ import re
 VIDEO_INTERVIEW_FILE = "/content/interview_sample.mp4"
 AUDIO_INTERVIEW_FILE = "/content/interview_sample.mp3"
 
-WHISPER_MODEL = whisper.load_model("medium")#,  device="cuda")  # "base", "small", "medium", "large"
+WHISPER_MODEL = whisper.load_model("medium")  #,  device="cuda")  # "base", "small", "medium", "large"
 LLAMA_INVOKE_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
 LLAMA_ACCESS_TOKEN = "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"
 
@@ -53,13 +53,14 @@ APTITUDE_TEST : {aptitude_test}
 ###
 """
 
+
 class AI_ENGINE:
-    def __init__(self, audio_file, aptitude_test_json={}, vid_file="", pdf_file_path=""):
+    def __init__(self, audio_file, aptitude_test_json=None, vid_file="", pdf_file_path=""):
         self.video_interview_file = vid_file
         if not audio_file:
             audio_file = vid_file.split(".")[0] + ".mp3"
         self.audio_interview_file = audio_file.replace("\\", "/")
-        self.aptitude_test_json = aptitude_test_json
+        self.aptitude_test_json = aptitude_test_json if aptitude_test_json is not None else {}
         self.pdf_file_path = pdf_file_path
 
         self.audio_transcription = None
@@ -68,15 +69,14 @@ class AI_ENGINE:
         self.career_path = None
 
     def convert_video_to_audio(self):
-      try:
-          clip = mp.VideoFileClip(self.video_interview_file)
-          clip.audio.write_audiofile(self.audio_interview_file)
-          clip.close()
-      except Exception as e:
-          print(f"Error occurred in convert_video_to_audio: {e}")
+        try:
+            clip = mp.VideoFileClip(self.video_interview_file)
+            clip.audio.write_audiofile(self.audio_interview_file)
+            clip.close()
+        except Exception as e:
+            print(f"Error occurred in convert_video_to_audio: {e}")
 
     def convert_audio_to_text(self):
-        print(f"[+] self.audio_interview_file: {self.audio_interview_file}")
         if os.path.exists(self.audio_interview_file):
             try:
                 self.audio_transcription = WHISPER_MODEL.transcribe(self.audio_interview_file)
@@ -124,7 +124,8 @@ class AI_ENGINE:
 
     def process_inputs(self):
         if self.audio_transcription is not None and self.resume_text is not None:
-            text_process = TEXT_PROCESS_PROMPT.format(audio_transcription=self.audio_transcription["text"], resume_text=self.resume_text)
+            text_process = TEXT_PROCESS_PROMPT.format(audio_transcription=self.audio_transcription["text"],
+                                                      resume_text=self.resume_text)
             self.merge_individual_summary = self.llama_api_call(text_process)
         elif self.resume_text:
             self.merge_individual_summary = deepcopy(self.resume_text)
@@ -135,7 +136,9 @@ class AI_ENGINE:
 
     def get_career_path(self):
         if self.merge_individual_summary is not None:
-            prompt = MAIN_PROMPT.replace("{user_info}", self.merge_individual_summary).replace("{aptitude_test}", json.dumps(self.aptitude_test_json))
+            prompt = MAIN_PROMPT.replace(
+                "{user_info}", self.merge_individual_summary).replace(
+                "{aptitude_test}", json.dumps(self.aptitude_test_json))
             resp = self.llama_api_call(prompt)
             try:
                 match = re.search(r'\{[\s\S]*\}', resp)  # [\s\S] matches newlines too
@@ -167,4 +170,3 @@ class AI_ENGINE:
                 print(f"{key}: {value}")
         else:
             print("Faild to generate career_path...")
-
