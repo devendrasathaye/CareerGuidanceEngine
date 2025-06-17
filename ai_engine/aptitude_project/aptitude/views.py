@@ -18,22 +18,22 @@ from .forms import AptitudeTestForm
 from django.http import JsonResponse
 
 CLIENT = MongoClient("mongodb://localhost:27017/")
-USER_RESPONSES = CLIENT["user_reponses"]["user_responses"]
-USER_RESPONSES = CLIENT["apti_question"]["apti_question"]
+DATABASE_CLIENT = CLIENT["CAREER_RECOMMENDATION"]
+USER_RESPONSES = DATABASE_CLIENT["user_responses"]
+APTI_QUESTIONS = DATABASE_CLIENT["aptitude_question"]
 
 QUESTIONS_DATA = {"quewstions": list(USER_RESPONSES.find({}, {"_id": 0}, sort=[("id", 1)]))}
 
 UPLOAD_DIR = os.path.join(settings.MEDIA_ROOT, "temp_uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-
-from django.views.decorators.http import require_http_methods
 from .forms import UploadForm
 from pymongo import MongoClient
 
 # assuming you have the following in your views.py
 CLIENT = MongoClient("mongodb://localhost:27017/")
 USER_RESPONSES = CLIENT["user_reponses"]["user_responses"]
+
 
 class AptitudeTestView(APIView):
     def get(self, request):
@@ -59,12 +59,10 @@ class AptitudeTestView(APIView):
         except json.JSONDecodeError:
             return Response({"error": "Invalid JSON format"}, status=status.HTTP_400_BAD_REQUEST)
 
-
     def post(self, request):
         data = request.data
         # Simulate calling AI engine or processing logic
         return Response({"message": "Processed successfully", "data": data})
-
 
 
 def test_form_view(request):
@@ -98,7 +96,6 @@ def test_form_view(request):
             with open(pdf_path, 'wb+') as destination:
                 for chunk in pdf.chunks():
                     destination.write(chunk)
-
 
             for qdx, ques in enumerate(questions_data):
                 if qdx >= len(QUESTIONS_DATA["questions"]):
@@ -140,7 +137,6 @@ def test_form_view(request):
         "questions": Question.objects.all(),
         "form": form
     })
-
 
 
 def dashboard_view(request):
